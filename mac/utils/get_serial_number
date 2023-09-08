@@ -1,0 +1,2 @@
+echo "Infos and serial number :"
+system_profiler SPHardwareDataType

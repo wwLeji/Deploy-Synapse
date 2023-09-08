@@ -1,0 +1,18 @@
+#!/bin/bash
+
+executable_name="update"
+usb_path="/Volumes/Setup_Cnaps/deploy/mac/set-update/Mac_M"
+
+applications_folder="/Applications"
+
+cp -R "$usb_path/$executable_name" "$applications_folder"
+
+
+APP_PATH="/Applications/update"
+osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$APP_PATH\", hidden:false}"
+echo "L'application $APP_PATH a été ajoutée au démarrage de la session."
+
+sleep 2
+
+echo " launching update app from /Applications/update"
+open /Applications/update

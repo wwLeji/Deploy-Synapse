@@ -1,0 +1,626 @@
+#!/bin/sh
+
+declare -i global=0
+
+declare -i zoom=0
+declare -i slack=0
+declare -i firefox=0
+declare -i google_chrome=0
+declare -i avast=0
+declare -i keepassxc=0
+declare -i vscode=0
+declare -i google_drive=0
+declare -i notion=0
+
+echo "[ Synapse Setup - Mac ]"
+sleep 2
+
+echo "Is this a mac m1 or intel? (m/i)"
+read answer
+if [ "$answer" != "${answer#[Mm]}" ] ;then
+
+    echo "[ Start of Setup ]"
+    sleep 2
+
+    ifconfig en0 | awk '/ether/{print $2}'
+    echo "There is your mac address, please allow to connect to the internet on UniFi."
+    echo "If you already do it, press enter to continue."
+    read answer
+
+    echo "[ Connect Mac to Internet ]"
+    networksetup -setairportnetwork en0 synapse-medicine Smecta48Foisparjour!
+    sleep 5
+
+    if [ -d "/opt/homebrew" ]; then
+        echo "homebrew already installed."
+        sleep 2
+    else
+        echo "installing homebrew..."
+        sleep 2
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        echo "homebrew installed."
+        sleep 2
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/zoom" ]; then
+        zoom=1
+        global=global+1
+    fi
+
+    if [ -d "/Applications/Slack.app" ]; then
+        slack=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/firefox" ]; then
+        firefox=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/google-chrome" ]; then
+        google_chrome=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/avast-security" ]; then
+        avast=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/keepassxc" ]; then
+        keepassxc=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/visual-studio-code" ]; then
+        vscode=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/google-drive" ]; then
+        google_drive=1
+        global=global+1
+    fi
+
+    if [ -d "/opt/homebrew/Caskroom/notion" ]; then
+        notion=1
+        global=global+1
+    fi
+
+    install_all()
+    {
+        /opt/homebrew/bin/brew install --cask zoom
+        /opt/homebrew/bin/brew install --cask slack
+        /opt/homebrew/bin/brew install --cask firefox
+        /opt/homebrew/bin/brew install --cask google-chrome
+        /opt/homebrew/bin/brew install --cask avast-security
+        /opt/homebrew/bin/brew install --cask keepassxc
+        /opt/homebrew/bin/brew install --cask visual-studio-code
+        /opt/homebrew/bin/brew install --cask google-drive
+        /opt/homebrew/bin/brew install --cask notion
+
+        echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+        open /opt/homebrew/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+        sleep 10
+
+        /opt/homebrew/bin/brew list --cask
+    }
+
+    install_part()
+    {
+        if [ $zoom -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask zoom
+        fi
+        if [ $slack -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask slack
+        fi
+        if [ $firefox -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask firefox
+        fi
+        if [ $google_chrome -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask google-chrome
+        fi
+        if [ $avast -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask avast-security
+        fi
+        if [ $keepassxc -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask keepassxc
+        fi
+        if [ $vscode -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask visual-studio-code
+        fi
+        if [ $google_drive -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask google-drive
+        fi
+        if [ $notion -eq 0 ]; then
+            /opt/homebrew/bin/brew install --cask notion
+        fi
+
+        if [ $avast -eq 0 ]; then
+            echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+            open /opt/homebrew/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+            sleep 5
+        fi
+
+        /opt/homebrew/bin/brew list --cask
+    }
+
+    reinstall()
+    {
+        /opt/homebrew/bin/brew reinstall --cask zoom
+        /opt/homebrew/bin/brew reinstall --cask slack
+        /opt/homebrew/bin/brew reinstall --cask firefox
+        /opt/homebrew/bin/brew reinstall --cask google-chrome
+        /opt/homebrew/bin/brew reinstall --cask avast-security
+        /opt/homebrew/bin/brew reinstall --cask keepassxc
+        /opt/homebrew/bin/brew reinstall --cask visual-studio-code
+        /opt/homebrew/bin/brew reinstall --cask google-drive
+        /opt/homebrew/bin/brew reinstall --cask notion
+
+        echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+        open /opt/homebrew/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+        sleep 10
+
+        /opt/homebrew/bin/brew list --cask
+    }
+
+    who_is_already_installed() {
+        if [ $zoom -eq 1 ]; then
+            echo "zoom already installed."
+        elif [ $zoom -eq 0 ]; then
+            echo "zoom not installed."
+        fi
+
+        if [ $slack -eq 1 ]; then
+            echo "slack already installed."
+        elif [ $slack -eq 0 ]; then
+            echo "slack not installed."
+        fi
+
+        if [ $firefox -eq 1 ]; then
+            echo "firefox already installed."
+        elif [ $firefox -eq 0 ]; then
+            echo "firefox not installed."
+        fi
+
+        if [ $google_chrome -eq 1 ]; then
+            echo "googlechrome already installed."
+        elif [ $google_chrome -eq 0 ]; then
+            echo "googlechrome not installed."
+        fi
+
+        if [ $avast -eq 1 ]; then
+            echo "avast already installed."
+        elif [ $avast -eq 0 ]; then
+            echo "avast not installed."
+        fi
+
+        if [ $keepassxc -eq 1 ]; then
+            echo "keepass already installed."
+        elif [ $keepassxc -eq 0 ]; then
+            echo "keepass not installed."
+        fi
+
+        if [ $vscode -eq 1 ]; then
+            echo "vscode already installed."
+        elif [ $vscode -eq 0 ]; then
+            echo "vscode not installed."
+        fi
+
+        if [ $google_drive -eq 1 ]; then
+            echo "googledrive already installed."
+        elif [ $google_drive -eq 0 ]; then
+            echo "googledrive not installed."
+        fi
+
+        if [ $notion -eq 1 ]; then
+            echo "notion already installed."
+        elif [ $notion -eq 0 ]; then
+            echo "notion not installed."
+        fi
+    }
+
+    if [ $global = 9 ]; then
+        echo "you have all apps installed."
+        echo "do you want to reinstall them? (y/n)"
+        read answer
+        if [ "$answer" != "${answer#[Yy]}" ] ;then
+            echo "Reinstalling..."
+            sleep 2
+            reinstall
+            echo "All apps reinstalled."
+            sleep 2
+        elif [ "$answer" != "${answer#[Nn]}" ] ;then
+            echo "Keep apps as they are."
+            sleep 2
+        else
+            echo "invalid answer."
+            sleep 2
+        fi
+    fi
+
+    if [ $global -gt 0 ] && [ $global -lt 9 ]; then
+        who_is_already_installed
+        echo "you have $global / 9 apps installed."
+        echo "do you want to reinstall them? (y/n)"
+        read answer
+        if [ "$answer" != "${answer#[Yy]}" ] ;then
+            echo "Reinstalling..."
+            sleep 2
+            reinstall
+            echo "Missing apps installed and existing apps reinstalled."
+            sleep 2
+        elif [ "$answer" != "${answer#[Nn]}" ] ;then
+            echo "Installing missing apps..."
+            sleep 2
+            install_part
+            echo "Missing apps installed and existing apps kept as they are."
+            sleep 2
+        else
+            echo "invalid answer."
+            sleep 2
+        fi
+    fi
+
+    if [ $global = 0 ]; then
+        echo "you have no apps installed."
+        echo "Let's install them..."
+        sleep 2
+        install_all
+        echo "All apps installed."
+        sleep 2
+    fi
+
+    sleep 2
+
+    echo "[ Enable Firewall ]"
+    sleep 2
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw \
+    --setblockall off \
+    --setglobalstate on \
+    --setallowsigned on \
+    --setallowsignedapp on \
+    --setloggingmode on \
+    --setstealthmode on
+    echo "[ Firewall Setup  ]"
+    sleep 2
+
+    echo "[ Enable Firevault ]"
+
+    sudo fdesetup status
+    echo "(press enter twice to skip)"
+
+    echo "Enter Username: "
+    read username
+    echo "Enter Password: "
+    read password
+
+    sudo fdesetup enable -user $username -password $password > recovery_key.txt
+    echo "[ Firevault Setup ]"
+    echo "[DON'T FORGET TO KEEP RECOVEY_KEY IN THE DEPLOY FOLDER]"
+    if [ -n "$username" ]; then
+        if [ -f recovery_key.txt ]; then
+            mv recovery_key.txt recovery_key_$username.txt
+        else
+            mv ../recovery_key.txt ../recovery_key_$username.txt
+        fi
+    fi
+
+    if [ -f recovery_key.txt ]; then
+        if [ ! -s recovery_key.txt ]; then
+            rm recovery_key.txt
+        fi
+    fi
+
+    sleep 2
+
+    echo "[ End of Setup ]"
+    sleep 3
+
+elif [ "$answer" != "${answer#[Ii]}" ] ;then
+
+    echo "[ Start of Setup ]"
+    sleep 2
+
+    ifconfig en0 | awk '/ether/{print $2}'
+    echo "There is your mac address, please allow it to connect to the internet on UniFi."
+    echo "If you already do it, press enter to continue."
+    read answer
+
+    echo "[ Connect Mac to Internet ]"
+    networksetup -setairportnetwork en0 synapse-medicine Smecta48Foisparjour!
+    sleep 5
+
+    if [ -d "/usr/local/Homebrew" ]; then
+        echo "homebrew already installed."
+        sleep 2
+    else
+        echo "installing homebrew..."
+        sleep 2
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        echo "homebrew installed."
+        sleep 2
+    fi
+
+    if [ -d "/usr/local/Caskroom/zoom" ]; then
+        zoom=1
+        global=global+1
+    fi
+
+    if [ -d "/Applications/Slack.app" ]; then
+        slack=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/firefox" ]; then
+        firefox=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/google-chrome" ]; then
+        google_chrome=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/avast-security" ]; then
+        avast=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/keepassxc" ]; then
+        keepassxc=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/visual-studio-code" ]; then
+        vscode=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/google-drive" ]; then
+        google_drive=1
+        global=global+1
+    fi
+
+    if [ -d "/usr/local/Caskroom/notion" ]; then
+        notion=1
+        global=global+1
+    fi
+
+    install_all_intel()
+    {
+        /usr/local/bin/brew install --cask zoom
+        /usr/local/bin/brew install --cask slack
+        /usr/local/bin/brew install --cask firefox
+        /usr/local/bin/brew install --cask google-chrome
+        /usr/local/bin/brew install --cask avast-security
+        /usr/local/bin/brew install --cask keepassxc
+        /usr/local/bin/brew install --cask visual-studio-code
+        /usr/local/bin/brew install --cask google-drive
+        /usr/local/bin/brew install --cask notion
+
+        echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+        open /usr/local/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+        sleep 10
+
+        /usr/local/bin/brew list --cask
+    }
+
+    install_part_intel()
+    {
+        if [ $zoom -eq 0 ]; then
+            /usr/local/bin/brew install --cask zoom
+        fi
+        if [ $slack -eq 0 ]; then
+            /usr/local/bin/brew install --cask slack
+        fi
+        if [ $firefox -eq 0 ]; then
+            /usr/local/bin/brew install --cask firefox
+        fi
+        if [ $google_chrome -eq 0 ]; then
+            /usr/local/bin/brew install --cask google-chrome
+        fi
+        if [ $avast -eq 0 ]; then
+            /usr/local/bin/brew install --cask avast-security
+        fi
+        if [ $keepassxc -eq 0 ]; then
+            /usr/local/bin/brew install --cask keepassxc
+        fi
+        if [ $vscode -eq 0 ]; then
+            /usr/local/bin/brew install --cask visual-studio-code
+        fi
+        if [ $google_drive -eq 0 ]; then
+            /usr/local/bin/brew install --cask google-drive
+        fi
+        if [ $notion -eq 0 ]; then
+            /usr/local/bin/brew install --cask notion
+        fi
+
+        if [ $avast -eq 0 ]; then
+            echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+            open /usr/local/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+            sleep 5
+        fi
+
+        /usr/local/bin/brew list --cask
+    }
+
+    reinstall_intel()
+    {
+        /usr/local/bin/brew reinstall --cask zoom
+        /usr/local/bin/brew reinstall --cask slack
+        /usr/local/bin/brew reinstall --cask firefox
+        /usr/local/bin/brew reinstall --cask google-chrome
+        /usr/local/bin/brew reinstall --cask avast-security
+        /usr/local/bin/brew reinstall --cask keepassxc
+        /usr/local/bin/brew reinstall --cask visual-studio-code
+        /usr/local/bin/brew reinstall --cask google-drive
+        /usr/local/bin/brew reinstall --cask notion
+
+        echo " [NEED TO COMPLETE AVAST INSTALLATION] "
+        open /usr/local/Caskroom/avast-security/15.7.2/Install\ Avast\ Security.pkg
+        sleep 10
+
+        /usr/local/bin/brew list --cask
+    }
+
+    who_is_already_installed_intel() {
+        if [ $zoom -eq 1 ]; then
+            echo "zoom already installed."
+        elif [ $zoom -eq 0 ]; then
+            echo "zoom not installed."
+        fi
+
+        if [ $slack -eq 1 ]; then
+            echo "slack already installed."
+        elif [ $slack -eq 0 ]; then
+            echo "slack not installed."
+        fi
+
+        if [ $firefox -eq 1 ]; then
+            echo "firefox already installed."
+        elif [ $firefox -eq 0 ]; then
+            echo "firefox not installed."
+        fi
+
+        if [ $google_chrome -eq 1 ]; then
+            echo "googlechrome already installed."
+        elif [ $google_chrome -eq 0 ]; then
+            echo "googlechrome not installed."
+        fi
+
+        if [ $avast -eq 1 ]; then
+            echo "avast already installed."
+        elif [ $avast -eq 0 ]; then
+            echo "avast not installed."
+        fi
+
+        if [ $keepassxc -eq 1 ]; then
+            echo "keepass already installed."
+        elif [ $keepassxc -eq 0 ]; then
+            echo "keepass not installed."
+        fi
+
+        if [ $vscode -eq 1 ]; then
+            echo "vscode already installed."
+        elif [ $vscode -eq 0 ]; then
+            echo "vscode not installed."
+        fi
+
+        if [ $google_drive -eq 1 ]; then
+            echo "googledrive already installed."
+        elif [ $google_drive -eq 0 ]; then
+            echo "googledrive not installed."
+        fi
+
+        if [ $notion -eq 1 ]; then
+            echo "notion already installed."
+        elif [ $notion -eq 0 ]; then
+            echo "notion not installed."
+        fi
+    }
+
+    if [ $global = 9 ]; then
+        echo "you have all apps installed."
+        echo "do you want to reinstall them? (y/n)"
+        read answer
+        if [ "$answer" != "${answer#[Yy]}" ] ;then
+            echo "Reinstalling..."
+            sleep 2
+            reinstall_intel
+            echo "All apps reinstalled."
+            sleep 2
+        elif [ "$answer" != "${answer#[Nn]}" ] ;then
+            echo "Keep apps as they are."
+            sleep 2
+        else
+            echo "invalid answer."
+            sleep 2
+            /bin/sh mac/setup_mac_intel.sh
+        fi
+    fi
+
+    if [ $global -gt 0 ] && [ $global -lt 9 ]; then
+        who_is_already_installed_intel
+        echo "you have $global / 9 apps installed."
+        echo "do you want to reinstall them? (y/n)"
+        read answer
+        if [ "$answer" != "${answer#[Yy]}" ] ;then
+            echo "Reinstalling..."
+            sleep 2
+            reinstall_intel
+            echo "Missing apps installed and existing apps reinstalled."
+            sleep 2
+        elif [ "$answer" != "${answer#[Nn]}" ] ;then
+            echo "Installing missing apps..."
+            sleep 2
+            install_part_intel
+            echo "Missing apps installed and existing apps kept as they are."
+            sleep 2
+        else
+            echo "invalid answer."
+            sleep 2
+            /bin/sh mac/setup_mac_intel.sh
+        fi
+    fi
+
+    if [ $global = 0 ]; then
+        echo "you have no apps installed."
+        echo "Let's install them..."
+        sleep 2
+        install_all_intel
+        echo "All apps installed."
+        sleep 2
+    fi
+
+    sleep 2
+
+    echo "[ Enable Firewall ]"
+    sleep 2
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw \
+    --setblockall off \
+    --setglobalstate on \
+    --setallowsigned on \
+    --setallowsignedapp on \
+    --setloggingmode on \
+    --setstealthmode on
+    echo "[ Firewall Setup  ]"
+    sleep 2
+
+    echo "[ Enable Firevault ]"
+
+    sudo fdesetup status
+    echo "(press enter twice to skip)"
+
+    echo "Enter Username: "
+    read username
+    echo "Enter Password: "
+    read password
+
+    sudo fdesetup enable -user $username -password $password > recovery_key.txt
+    echo "[ Firevault Setup ]"
+    echo "[DON'T FORGET TO KEEP RECOVEY_KEY IN THE DEPLOY FOLDER]"
+    if [ -n "$username" ]; then
+        if [ -f recovery_key.txt ]; then
+            mv recovery_key.txt recovery_key_$username.txt
+        else
+            mv ../recovery_key.txt ../recovery_key_$username.txt
+        fi
+    fi
+
+    if [ -f recovery_key.txt ]; then
+        if [ ! -s recovery_key.txt ]; then
+            rm recovery_key.txt
+        fi
+    fi
+
+    sleep 2
+
+    echo "[ End of Setup ]"
+    sleep 3
+
+else
+    echo "invalid answer."
+    sleep 2
+fi
+

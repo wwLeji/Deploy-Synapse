@@ -94,7 +94,7 @@ Work In Progess :
 
 ## Link to an other project
 
-This project precedes another, called the Salt Project. It takes up the ideas of this one, the mechanics, like Homebrew. Today, the "Deploy" project is useful for setting up a new company machine, or a refurbished old one. Salt Project allows us to keep these computers up to date, and remotely, once they've been handed over to the employee. Here's a link to this new [Salt Project](https://github.com/wwLeji/Salt-Project-Synapse), which complements this one perfectly.
+This project precedes another, called the Salt Project. It takes up the ideas of this one, the mechanics, like Homebrew. Today, the "Deploy" project is useful for setting up a new company machine, or a refurbished old one. Salt Project allows us to keep these computers up to date, and remotely, once they've been handed over to the employee. Here's a link to this new [Salt Project](https://gitlab.com/synapse-medicine/it-management/salt-project), which complements this one perfectly.
 
 
 ## Authors
